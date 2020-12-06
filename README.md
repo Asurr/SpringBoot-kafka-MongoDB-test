@@ -1,11 +1,11 @@
 # Spring Boot with Kafka,MongoDB and Swagger Example
 
-## This Project covers with KafkaController:
-how to use Spring Boot with Spring Kafka to Consume JSON(User)/String message from Kafka topics
-how to use Spring Boot with Spring Kafka to Produce JSON(User)/String message to Kafka topics
+## KafkaController:
+- `how to use Spring Boot with Spring Kafka to Consume JSON(User)/String message from Kafka topics`
+- `how to use Spring Boot with Spring Kafka to Produce JSON(User)/String message to Kafka topics`
 
-## This Project covers with UserController:
-how to use Spring Boot with MongoDB to find,create and delete users on MongoDB 
+## UserController:
+- `how to use Spring Boot with MongoDB to find,create and delete users on MongoDB` 
 
 ## ZOOKEEPER COMMANDS
 
