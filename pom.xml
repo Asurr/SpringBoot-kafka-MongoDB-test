@@ -73,6 +73,13 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox.version}</version>
         </dependency>
+        <!-- aspect dependency -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjtools</artifactId>
+		    <version>1.8.9</version>
+		</dependency>
+        <!-- validation dependency -->  
         <dependency>
 		    <groupId>javax.validation</groupId>
 		    <artifactId>validation-api</artifactId>
