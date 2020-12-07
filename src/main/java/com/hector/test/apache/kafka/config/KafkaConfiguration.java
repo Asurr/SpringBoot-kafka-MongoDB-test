@@ -8,6 +8,8 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -17,15 +19,23 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.ConsumerAwareListenerErrorHandler;
+import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.util.backoff.FixedBackOff;
 
 import com.hector.test.apache.kafka.model.User;
+import com.hector.test.apache.kafka.service.impl.KafkaConsumerServiceImpl;
 
 @EnableKafka
 @Configuration
 public class KafkaConfiguration {
 
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConfiguration.class);
 
 	//---------------------------------
 	//	
@@ -51,6 +61,8 @@ public class KafkaConfiguration {
 	public ConcurrentKafkaListenerContainerFactory<String, String> messagesKafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
 		factory.setConsumerFactory(messageConsumerFactory());
+		factory.getContainerProperties().setAckOnError(false);//no devuelve los errores solo los exitos
+		factory.setErrorHandler(new SeekToCurrentErrorHandler(new FixedBackOff(1000L, 3L))); //si hay error intentar cada 1000l y 3 intentos
 		return factory;
 	}
 
@@ -72,6 +84,7 @@ public class KafkaConfiguration {
 	public ConcurrentKafkaListenerContainerFactory<String, User> userKafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, User> factory = new ConcurrentKafkaListenerContainerFactory<String, User>();
 		factory.setConsumerFactory(userConsumerFactory());
+		factory.setErrorHandler(new SeekToCurrentErrorHandler(new FixedBackOff(1000L, 2L)));
 		return factory;
 	}
 
@@ -114,6 +127,22 @@ public class KafkaConfiguration {
 	public KafkaTemplate<String, User>UserKafkaTemplate(){
 		return new KafkaTemplate<>(UserProducerFactory());
 	}
-
+	
+	
+	@Bean
+	public ConsumerAwareListenerErrorHandler listen3ErrorHandler() {
+	    return (m, e, c) -> {
+	        MessageHeaders headers = m.getHeaders();
+	        LOGGER.info("listen3ErrorHandler message "+m);
+	        c.seek(new org.apache.kafka.common.TopicPartition(
+	                headers.get(KafkaHeaders.RECEIVED_TOPIC, String.class),
+	                headers.get(KafkaHeaders.RECEIVED_PARTITION_ID, Integer.class)),
+	                headers.get(KafkaHeaders.OFFSET, Long.class));
+	        //guardar en bd el error message exception topic
+	        	      	        
+	        return null;
+	    };
+	}
+	
 }
 

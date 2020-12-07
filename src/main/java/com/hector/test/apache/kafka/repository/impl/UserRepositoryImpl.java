@@ -31,21 +31,21 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public Optional<User> findByDni(String dni) {
 		ArrayList<User> users = (ArrayList<User>) this.mongoOperations.find(new Query(Criteria.where("_id").is(dni)), User.class);
-		Optional<User> optionalUsers = Optional.ofNullable(users.size()>0?users.get(0):null);
+		Optional<User> optionalUsers = Optional.ofNullable(!users.isEmpty()?users.get(0):null);
 		return optionalUsers;
 	}
 
 	@Override
 	public Optional<List<User>> findByName(String name) {
 		ArrayList<User> users = (ArrayList<User>) this.mongoOperations.find(new Query(Criteria.where("name").is(name)), User.class);
-		Optional<List<User>> optionalUsers = Optional.ofNullable(users.size()>0?users:null);
+		Optional<List<User>> optionalUsers = Optional.ofNullable(!users.isEmpty()?users:null);
 		return optionalUsers;
 	}
 
 	@Override
 	public Optional<List<User>> findByDept(String dept) {
 		ArrayList<User> users = (ArrayList<User>) this.mongoOperations.find(new Query(Criteria.where("dept").is(dept)), User.class);
-		Optional<List<User>> optionalUsers = Optional.ofNullable(users.size()>0?users:null);
+		Optional<List<User>> optionalUsers = Optional.ofNullable(!users.isEmpty()?users:null);
 		return optionalUsers;
 	}
 

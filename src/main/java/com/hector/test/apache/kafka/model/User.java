@@ -1,23 +1,19 @@
 package com.hector.test.apache.kafka.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.mongodb.lang.NonNull;
 
 @Document(collection = "users")
-@JsonPropertyOrder({"dni", "name", "dept", "age", "mail", "country", "phone"})
+@JsonPropertyOrder({"dni", "name", "dept", "age", "mail", "country", "phone","games"})
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Transient
-    public static final String SEQUENCE_NAME = "users_sequence";
-
 	@Id
 	private String dni;
 	private String name;
@@ -26,6 +22,7 @@ public class User implements Serializable {
 	private String mail;
 	private String country;
 	private double phone;
+	private List<Game> games;
 
 	public User(String dni, String name, String dept) {
 		this.dni = dni;
@@ -101,6 +98,14 @@ public class User implements Serializable {
 
 	public void setDni(String dni) {
 		this.dni = dni;
+	}
+	
+	public List<Game> getGames() {
+		return games;
+	}
+
+	public void setGames(List<Game> games) {
+		this.games = games;
 	}
 
 	@Override

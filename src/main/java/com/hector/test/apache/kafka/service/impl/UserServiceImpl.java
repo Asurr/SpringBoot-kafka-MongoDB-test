@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	private UserRepository userRepository;
 
-	//Instanciacion del userRepository
+	//Instanciacion del userRepository (Test Mockito repository para probar)
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository){
 		this.userRepository = userRepository;

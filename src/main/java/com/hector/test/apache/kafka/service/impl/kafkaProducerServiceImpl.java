@@ -16,7 +16,7 @@ import com.hector.test.apache.kafka.service.KafkaProducerService;
 @Service("kafkaProducerService")
 public class kafkaProducerServiceImpl implements KafkaProducerService{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(kafkaProducerServiceImpl.class);
 
 	@Autowired
 	private KafkaTemplate<String, String> messageKafkaTemplate;

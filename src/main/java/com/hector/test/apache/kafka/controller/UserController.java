@@ -87,6 +87,7 @@ public class UserController {
 	public ResponseEntity<List<User>> FindUsersByDept(@PathVariable String dept)  throws  UserNotFoundException{
 		LOGGER.info("Get userByDept");
 		try{
+			users = usersService.findByDept(dept);
 		}catch(UserNotFoundException e){
 			throw new UserNotFoundException("Users not exist");        			
 		}     

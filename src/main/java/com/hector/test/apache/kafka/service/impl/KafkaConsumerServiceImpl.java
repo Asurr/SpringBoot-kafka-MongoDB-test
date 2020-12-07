@@ -11,12 +11,12 @@ import com.hector.test.apache.kafka.service.KafkaConsumerService;
 @Service("KafkaConsumerService")
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerServiceImpl.class);
 
 	//Aqui si falla logeamos el mensaje y seguimos con el siguiente
-	@KafkaListener(topics = "${message.topic.example:kafka_Example}", groupId = "${message.group.name:group_id}",containerFactory="messagesKafkaListenerContainerFactory")
-	public void consume(String message) {		
-		if (message.startsWith("foo")) {
+	@KafkaListener(topics = "${message.topic.example:kafka_Example}", groupId = "${message.group.name:group_id}",containerFactory="messagesKafkaListenerContainerFactory",errorHandler = "listen3ErrorHandler")
+	public void consume(String message) {
+		if (message.startsWith("user")) {
 			throw new RuntimeException("failed");
 		}
 		LOGGER.info("Recieved Message of kafka_example in  listener: " + message);
