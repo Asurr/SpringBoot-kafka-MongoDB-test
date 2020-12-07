@@ -47,15 +47,15 @@ public class UserController {
 	//
 	//---------------------------------
 
-	@ApiOperation(value = "Find an user by Id", notes = "Return a user by Id" )
+	@ApiOperation(value = "Find an user by Dni", notes = "Return a user by Dni" )
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 500, message = "Generic Error"),
 			@ApiResponse(code = 404, message = "User Not found") })
-	@RequestMapping(value="/api/user/findById/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> findUserById(@PathVariable String id)  throws  UserNotFoundException{
-		LOGGER.info("Get userById");
+	@RequestMapping(value="/api/user/findByDni/{dni}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> findUserByDni(@PathVariable String dni)  throws  UserNotFoundException{
+		LOGGER.info("Get userByDni");
 		try{
-			user = usersService.findById(id);
+			user = usersService.findByDni(dni);
 		}catch(UserNotFoundException e){
 			throw new UserNotFoundException("User not exist");        			
 		}     
@@ -84,7 +84,7 @@ public class UserController {
 			@ApiResponse(code = 500, message = "Generic Error"),
 			@ApiResponse(code = 404, message = "Users Not found") })
 	@RequestMapping(value="/api/user/findByDept/{dept}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<User>> FindusersByDept(@PathVariable String dept)  throws  UserNotFoundException{
+	public ResponseEntity<List<User>> FindUsersByDept(@PathVariable String dept)  throws  UserNotFoundException{
 		LOGGER.info("Get userByDept");
 		try{
 		}catch(UserNotFoundException e){
@@ -99,7 +99,7 @@ public class UserController {
 			@ApiResponse(code = 500, message = "Generic Error"),
 			@ApiResponse(code = 404, message = "Users Not found") })
 	@RequestMapping(value="/api/user/find",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<User>> userById(){
+	public ResponseEntity<List<User>> findAll(){
 		LOGGER.info("Get allUsers");
 		try {
 			users = usersService.findAll();
@@ -115,14 +115,14 @@ public class UserController {
 	//
 	//-------------------------------
 
-	@RequestMapping(value="/api/user/deleteById/{id}",method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete an user", notes = "Delete a user by Id")
+	@RequestMapping(value="/api/user/deleteByDni/{dni}",method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete an user", notes = "Delete a user by Dni")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Delete Success"),
 			@ApiResponse(code = 500, message = "Generic Error"),
 			@ApiResponse(code = 404, message = "User Not found") })
-	public ResponseEntity<Void>deleteUserById(@PathVariable String id){
-		LOGGER.info("Delete user " + id);
-		usersService.deleteUserById(id);
+	public ResponseEntity<Void>deleteUserByDni(@PathVariable String dni){
+		LOGGER.info("Delete user dni " + dni);
+		usersService.deleteUserByDni(dni);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -132,8 +132,19 @@ public class UserController {
 			@ApiResponse(code = 500, message = "Generic Error"),
 			@ApiResponse(code = 404, message = "User Not found") })
 	public ResponseEntity<Void>deleteUserByName(@PathVariable String name){
-		LOGGER.info("Delete user " + name);
-		usersService.deleteUserById(name);
+		LOGGER.info("Delete user name " + name);
+		usersService.deleteUserByName(name);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/api/user/delete",method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete all users", notes = "Delete all users")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Delete Success"),
+			@ApiResponse(code = 500, message = "Generic Error"),
+			@ApiResponse(code = 404, message = "User Not found") })
+	public ResponseEntity<Void>deleteAll(){
+		LOGGER.info("Delete All users ");
+		usersService.deleteAll();
 		return ResponseEntity.noContent().build();
 	}
 

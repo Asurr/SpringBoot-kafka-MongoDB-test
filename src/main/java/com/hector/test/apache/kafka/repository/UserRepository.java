@@ -7,7 +7,7 @@ import com.hector.test.apache.kafka.model.User;
 
 public interface UserRepository {
 
-	public Optional<User> findById(String id);
+	public Optional<User> findByDni(String id);
 
 	public Optional<List<User>> findByName(String name);
 
@@ -16,11 +16,15 @@ public interface UserRepository {
 	public Optional<List<User>> findAll();
 
 	public User save(User user);
-
-	public void deleteUserById(String id);
-
-	void deleteUserByName(String name);
-
+	
 	public User update(User user);
+
+	public void deleteUserByDni(String dni);
+
+	public void deleteUserByName(String name);
+	
+	public void deleteAll();
+
+	
 
 }

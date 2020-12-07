@@ -30,7 +30,7 @@ public class KafkaController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Autowired
-	private KafkaProducerService sender;
+	private KafkaProducerService kafkaProducerService;
 
 	//---------------------------------
 	//	
@@ -47,7 +47,7 @@ public class KafkaController {
 	public String sendMessage(@PathVariable String message) {
 		String respuesta = "Exito";		
 		try {
-			sender.sendMessage("kafka_Example",message);
+			kafkaProducerService.sendMessage("kafka_Example",message);
 		}catch (Exception e) {
 			// TODO: handle exception
 			respuesta = "Error desconocido";
@@ -64,7 +64,7 @@ public class KafkaController {
 	public ResponseEntity<User> sendUser(@RequestBody @Valid User user) {
 		LOGGER.info("Send new user");
 		try {
-			sender.sendUser("kafka_Example_json",user);
+			kafkaProducerService.sendUser("kafka_Example_json",user);
 		}catch (Exception e) {
 			throw new UserNotFoundException("Error User not sent");        			
 		}

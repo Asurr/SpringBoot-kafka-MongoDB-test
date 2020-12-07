@@ -6,7 +6,7 @@ import com.hector.test.apache.kafka.model.User;
 
 public interface UserService {
 
-	public User findById(String id);
+	public User findByDni(String dni);
 
 	public List<User> findByName(String name);
 
@@ -18,8 +18,10 @@ public interface UserService {
 
 	public User updateUser(User user);
 
-	public void deleteUserById(String id);
+	public void deleteUserByDni(String dni);
 
-	public void DeleteUserByName(String name);
+	public void deleteUserByName(String name);
+	
+	public void deleteAll();
 
 }

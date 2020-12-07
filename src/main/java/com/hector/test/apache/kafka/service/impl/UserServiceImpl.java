@@ -28,13 +28,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	//metodos de busqueda
-	public User findById(String id) {
-		Optional<User> user = userRepository.findById(id);
+	public User findByDni(String dni) {
+		Optional<User> user = userRepository.findByDni(dni);
 		if(user.isPresent()) {
-			LOGGER.info(String.format("Read userId '{}'", id));
+			LOGGER.info(String.format("Read userId '{}'", dni));
 			return user.get();
 		}else {
-			throw new UserNotFoundException(String.format("User with id '{}' not Found",id));
+			throw new UserNotFoundException(String.format("User with dni '{}' not Found",dni));
 		}
 	}
 
@@ -79,12 +79,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	//metodos de borrado
-	public void deleteUserById(String id) {
-		userRepository.deleteUserById(id);
+	public void deleteUserByDni(String dni) {
+		userRepository.deleteUserByDni(dni);
 	}
 
-	public void DeleteUserByName(String name) {
+	public void deleteUserByName(String name) {
 		userRepository.deleteUserByName(name);
+	}
+
+	@Override
+	public void deleteAll() {
+		userRepository.deleteAll();
+		
 	}
 
 }

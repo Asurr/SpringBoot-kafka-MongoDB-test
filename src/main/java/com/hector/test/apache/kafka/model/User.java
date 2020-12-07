@@ -9,21 +9,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.mongodb.lang.NonNull;
 
 @Document(collection = "users")
-@JsonPropertyOrder({"userId", "name","dept"})
+@JsonPropertyOrder({"dni", "name","dept","age","mail","country","phone"})
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@NonNull  
-	private String id;
+	private String dni;
 	@NonNull  
 	private String name;
 	private String dept;
+	private String age;
+	private String mail;
+	private String country;
+	private double phone;
 
-	public User(String name, String dept) {
+	public User(String dni, String name, String dept) {
+		this.dni = dni;
 		this.name = name;
 		this.dept = dept;
+	}
+
+	public User(String dni, String name, String dept, String age, String mail, String country, double phone) {
+		super();
+		this.dni = dni;
+		this.name = name;
+		this.dept = dept;
+		this.age = age;
+		this.mail = mail;
+		this.country = country;
+		this.phone = phone;
 	}
 
 	public User() {
@@ -46,16 +62,56 @@ public class User implements Serializable {
 	}
 
 	public String getId() {
-		return id;
+		return dni;
 	}
 
 	public void setId(String id) {
-		this.id = id;
+		this.dni = id;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public double getPhone() {
+		return phone;
+	}
+
+	public void setPhone(double phone) {
+		this.phone = phone;
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", dept=" + dept + "]";
+		return "User [dni="+ dni +"name=" + name + ", dept=" + dept + "]";
 	}
 
 }

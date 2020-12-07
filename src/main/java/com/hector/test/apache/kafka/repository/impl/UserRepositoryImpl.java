@@ -28,8 +28,8 @@ public class UserRepositoryImpl implements UserRepository{
 
 	//metodos de busqueda
 	@Override
-	public Optional<User> findById(String id) {
-		User users = (User) this.mongoOperations.find(new Query(Criteria.where("id").is(id)), User.class);
+	public Optional<User> findByDni(String dni) {
+		User users = (User) this.mongoOperations.find(new Query(Criteria.where("dni").is(dni)), User.class);
 		Optional<User> optionalUsers = Optional.ofNullable(users);
 		return optionalUsers;
 	}
@@ -59,13 +59,20 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public User save(User user) {
 		this.mongoOperations.save(user);
-		return (User) findById(user.getId()).get();
+		return (User) findByDni(user.getId()).get();
+	}
+	
+	//metodo de update
+	@Override
+	public User update(User user) {
+		this.mongoOperations.save(user);
+		return (User) findByDni(user.getId()).get();
 	}
 
 	//metodos de borrado
 	@Override
-	public void deleteUserById(String id) {
-		this.mongoOperations.findAndRemove(new Query(Criteria.where("id")), User.class);		
+	public void deleteUserByDni(String dni) {
+		this.mongoOperations.findAndRemove(new Query(Criteria.where("dni")), User.class);		
 	}
 
 	@Override
@@ -73,11 +80,9 @@ public class UserRepositoryImpl implements UserRepository{
 		this.mongoOperations.findAndRemove(new Query(Criteria.where("name").is(name)), User.class);		
 	}
 
-	//metodo de update
 	@Override
-	public User update(User user) {
-		this.mongoOperations.save(user);
-		return (User) findById(user.getId()).get();
+	public void deleteAll() {
+		this.mongoOperations.findAllAndRemove(new Query(), User.class);
 	}
 
 }
