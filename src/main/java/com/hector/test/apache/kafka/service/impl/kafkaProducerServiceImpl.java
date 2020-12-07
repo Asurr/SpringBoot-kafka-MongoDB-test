@@ -26,8 +26,7 @@ public class kafkaProducerServiceImpl implements KafkaProducerService{
 
 	@Value("${message.topic.example:kafka_Example}")
 	private String topicName;
-
-
+	
 	public void sendMessage(String topic,final String message) {
 		if (topic==null || topic.trim().equals("")) {
 			topic=topicName;
@@ -48,14 +47,14 @@ public class kafkaProducerServiceImpl implements KafkaProducerService{
 			topic=topicName;
 		}
 		ListenableFuture<SendResult<String, User>> future = userKafkaTemplate.send(topic, user);
-		future.addCallback(null, new ListenableFutureCallback<SendResult<String, String>>(){
-			@Override
-			public void onSuccess(SendResult<String, String> result) {
-				LOGGER.info("Sent message=[" + user + "] with offset=[" + result.getRecordMetadata().offset() + "]");	
-			}
+		future.addCallback(new ListenableFutureCallback<SendResult<String, User>>(){
 			@Override
 			public void onFailure(Throwable ex) {
 				LOGGER.error("Unable to send message=[" + user + "] due to : " + ex.getMessage());
+			}
+			@Override
+			public void onSuccess(SendResult<String, User> result) {
+				LOGGER.info("Sent message=[" + user + "] with offset=[" + result.getRecordMetadata().offset() + "]");
 			}
 
 		});

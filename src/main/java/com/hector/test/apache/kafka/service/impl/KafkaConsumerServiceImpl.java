@@ -2,6 +2,7 @@ package com.hector.test.apache.kafka.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,10 @@ import com.hector.test.apache.kafka.service.KafkaConsumerService;
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerServiceImpl.class);
-
+	
+	@Autowired
+	private UserServiceImpl userServiceImpl;
+	
 	//Aqui si falla logeamos el mensaje y seguimos con el siguiente
 	@KafkaListener(topics = "${message.topic.example:kafka_Example}", groupId = "${message.group.name:group_id}",containerFactory="messagesKafkaListenerContainerFactory",errorHandler = "listen3ErrorHandler")
 	public void consume(String message) {
@@ -24,6 +28,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
 	@KafkaListener(topics = "${message.topic.example.json:kafka_Example_json}", groupId = "${group_json",containerFactory="userKafkaListenerContainerFactory")
 	public void consumeJson(User user) {
+		userServiceImpl.saveUser(user);
 		LOGGER.info("Recieved Message of kafka_example_json in  listener: " + user);
 	}
 

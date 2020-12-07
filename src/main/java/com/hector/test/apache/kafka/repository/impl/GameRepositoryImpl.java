@@ -44,7 +44,7 @@ public class GameRepositoryImpl implements GameRepository{
 		this.mongoOperations.save(game);
 		return (Game) findByCode(game.getCode()).get();
 	}
-
+	
 	@Override
 	public void deleteByCode(String code) {
 		this.mongoOperations.findAndRemove(new Query(Criteria.where("code").is(code)), Game.class);		

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hector.test.apache.kafka.exception.UserNotFoundException;
+import com.hector.test.apache.kafka.model.Game;
 import com.hector.test.apache.kafka.model.User;
+import com.hector.test.apache.kafka.repository.GameRepository;
 import com.hector.test.apache.kafka.repository.UserRepository;
 import com.hector.test.apache.kafka.service.UserService;
 
@@ -19,12 +21,16 @@ import com.hector.test.apache.kafka.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+	
 	private UserRepository userRepository;
+	private GameRepository gameRepository;
+
 
 	//Instanciacion del userRepository (Test Mockito repository para probar)
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository){
+	public UserServiceImpl(UserRepository userRepository,GameRepository gameRepository){
 		this.userRepository = userRepository;
+		this.gameRepository = gameRepository;
 	}
 
 	//metodos de busqueda
@@ -68,8 +74,13 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	//metodo de guardado
+	//metodo de guardado (guarda los juegos tb)
 	public User saveUser(User user) {
+		if(!user.getGames().isEmpty()) {
+			for (Game ga : user.getGames()) {
+				gameRepository.save(ga);
+			}
+		}
 		return userRepository.save(user);
 	}
 
