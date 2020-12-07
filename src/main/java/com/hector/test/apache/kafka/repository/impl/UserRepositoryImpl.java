@@ -1,5 +1,6 @@
 package com.hector.test.apache.kafka.repository.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,22 +30,22 @@ public class UserRepositoryImpl implements UserRepository{
 	//metodos de busqueda
 	@Override
 	public Optional<User> findByDni(String dni) {
-		User users = (User) this.mongoOperations.find(new Query(Criteria.where("dni").is(dni)), User.class);
-		Optional<User> optionalUsers = Optional.ofNullable(users);
+		ArrayList<User> users = (ArrayList<User>) this.mongoOperations.find(new Query(Criteria.where("_id").is(dni)), User.class);
+		Optional<User> optionalUsers = Optional.ofNullable(users.size()>0?users.get(0):null);
 		return optionalUsers;
 	}
 
 	@Override
 	public Optional<List<User>> findByName(String name) {
-		List<User> users = this.mongoOperations.find(new Query(Criteria.where("name").is(name)), User.class);
-		Optional<List<User>> optionalUsers = Optional.ofNullable(users);
+		ArrayList<User> users = (ArrayList<User>) this.mongoOperations.find(new Query(Criteria.where("name").is(name)), User.class);
+		Optional<List<User>> optionalUsers = Optional.ofNullable(users.size()>0?users:null);
 		return optionalUsers;
 	}
 
 	@Override
 	public Optional<List<User>> findByDept(String dept) {
-		List<User> users = this.mongoOperations.find(new Query(Criteria.where("dept").is(dept)), User.class);
-		Optional<List<User>> optionalUsers = Optional.ofNullable(users);
+		ArrayList<User> users = (ArrayList<User>) this.mongoOperations.find(new Query(Criteria.where("dept").is(dept)), User.class);
+		Optional<List<User>> optionalUsers = Optional.ofNullable(users.size()>0?users:null);
 		return optionalUsers;
 	}
 
@@ -59,14 +60,14 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public User save(User user) {
 		this.mongoOperations.save(user);
-		return (User) findByDni(user.getId()).get();
+		return (User) findByDni(user.getDni()).get();
 	}
 	
 	//metodo de update
 	@Override
 	public User update(User user) {
 		this.mongoOperations.save(user);
-		return (User) findByDni(user.getId()).get();
+		return (User) findByDni(user.getDni()).get();
 	}
 
 	//metodos de borrado

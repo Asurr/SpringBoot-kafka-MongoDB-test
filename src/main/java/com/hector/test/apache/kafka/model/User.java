@@ -3,21 +3,23 @@ package com.hector.test.apache.kafka.model;
 import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.mongodb.lang.NonNull;
 
 @Document(collection = "users")
-@JsonPropertyOrder({"dni", "name","dept","age","mail","country","phone"})
+@JsonPropertyOrder({"dni", "name", "dept", "age", "mail", "country", "phone"})
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
 
 	@Id
-	@NonNull  
 	private String dni;
-	@NonNull  
 	private String name;
 	private String dept;
 	private String age;
@@ -59,14 +61,6 @@ public class User implements Serializable {
 
 	public void setDept(String dept) {
 		this.dept = dept;
-	}
-
-	public String getId() {
-		return dni;
-	}
-
-	public void setId(String id) {
-		this.dni = id;
 	}
 
 	public String getAge() {

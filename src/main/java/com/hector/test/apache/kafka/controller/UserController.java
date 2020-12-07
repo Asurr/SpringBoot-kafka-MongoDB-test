@@ -117,7 +117,7 @@ public class UserController {
 
 	@RequestMapping(value="/api/user/deleteByDni/{dni}",method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete an user", notes = "Delete a user by Dni")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Delete Success"),
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete Success"),
 			@ApiResponse(code = 500, message = "Generic Error"),
 			@ApiResponse(code = 404, message = "User Not found") })
 	public ResponseEntity<Void>deleteUserByDni(@PathVariable String dni){
@@ -128,7 +128,7 @@ public class UserController {
 
 	@RequestMapping(value="/api/user/deleteByName/{name}",method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete an user", notes = "Delete a user by Name")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Delete Success"),
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete Success"),
 			@ApiResponse(code = 500, message = "Generic Error"),
 			@ApiResponse(code = 404, message = "User Not found") })
 	public ResponseEntity<Void>deleteUserByName(@PathVariable String name){
@@ -139,7 +139,7 @@ public class UserController {
 	
 	@RequestMapping(value="/api/user/delete",method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete all users", notes = "Delete all users")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Delete Success"),
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete Success"),
 			@ApiResponse(code = 500, message = "Generic Error"),
 			@ApiResponse(code = 404, message = "User Not found") })
 	public ResponseEntity<Void>deleteAll(){
