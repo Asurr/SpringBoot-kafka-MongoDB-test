@@ -20,6 +20,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ConsumerAwareListenerErrorHandler;
+import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
@@ -28,7 +29,6 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.backoff.FixedBackOff;
 
 import com.hector.test.apache.kafka.model.User;
-import com.hector.test.apache.kafka.service.impl.KafkaConsumerServiceImpl;
 
 @EnableKafka
 @Configuration
@@ -51,8 +51,10 @@ public class KafkaConfiguration {
 		config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
 		config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
 		config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-
+		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);		
+		config.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 15000);
+		config.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 1000);
+		
 		return new DefaultKafkaConsumerFactory<String, String>(config);
 	}
 
