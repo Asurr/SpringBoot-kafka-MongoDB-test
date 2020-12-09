@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoActionOperation;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,7 +19,7 @@ import com.hector.test.apache.kafka.repository.GameRepository;
 public class GameRepositoryImpl implements GameRepository{
 	
 	private final MongoOperations mongoOperations;
-
+	
 	@Autowired
 	public GameRepositoryImpl(MongoOperations mongoOperations) {
 		Assert.notNull(mongoOperations);
@@ -41,7 +42,7 @@ public class GameRepositoryImpl implements GameRepository{
 
 	@Override
 	public Game save(Game game) {
-		this.mongoOperations.save(game);
+		this.mongoOperations.save(game.gameToLower());
 		return (Game) findByCode(game.getCode()).get();
 	}
 	
@@ -53,6 +54,13 @@ public class GameRepositoryImpl implements GameRepository{
 	@Override
 	public void deleteAll() {
 		this.mongoOperations.findAllAndRemove(new Query(), Game.class);		
+	}
+
+	@Override
+	public Optional<Game> findByName(String name) {
+		ArrayList<Game> game = (ArrayList<Game>) this.mongoOperations.find(new Query(Criteria.where("name").is(name)), Game.class);
+		Optional<Game> optionalGame = Optional.ofNullable(!game.isEmpty()?game.get(0):null);
+		return optionalGame;
 	}
 
 }

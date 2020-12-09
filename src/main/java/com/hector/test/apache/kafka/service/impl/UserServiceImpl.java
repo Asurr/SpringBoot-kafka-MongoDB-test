@@ -1,7 +1,11 @@
 package com.hector.test.apache.kafka.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,40 +39,42 @@ public class UserServiceImpl implements UserService {
 
 	//metodos de busqueda
 	public User findByDni(String dni) {
-		Optional<User> user = userRepository.findByDni(dni);
-		if(user.isPresent()) {
+		Optional<User> optionalUser = userRepository.findByDni(dni);
+		if(optionalUser.isPresent()) {
 			LOGGER.info(String.format("Read userId '{}'", dni));
-			return user.get();
+			return optionalUser.get();
 		}else {
 			throw new UserNotFoundException(String.format("User with dni '{}' not Found",dni));
 		}
 	}
 
 	public List<User> findByName(String name) {
-		Optional<List<User>> users = userRepository.findByName(name);
-		if(users.isPresent()) {
+		Optional<List<User>> optionalUsersList = userRepository.findByName(name);
+		if(optionalUsersList.isPresent()) {
 			LOGGER.info(String.format("Read name '{}'", name));
-			return users.get();
+			return optionalUsersList.get();
 		}else {
 			throw new UserNotFoundException(String.format("Users with name '{}' not Found",name));
 		}
 	}
 
 	public List<User> findByDept(String dept) {
-		Optional<List<User>> users = userRepository.findByDept(dept);
-		if(users.isPresent()) {
+		Optional<List<User>> optionalUsersList = userRepository.findByDept(dept);				
+		if(optionalUsersList.isPresent()) {
 			LOGGER.info(String.format("Read dept '{}'", dept));
-			return users.get();
+			return optionalUsersList.get();
 		}else {
 			throw new UserNotFoundException(String.format("Users with dept '{}' not Found",dept));
 		}
 	}
 
 	public List<User> findAll() {
-		Optional<List<User>> users = userRepository.findAll();
-		if(users.isPresent()) {
-			LOGGER.info(String.format("Read All users"));
-			return users.get();
+		Optional<List<User>> optionalUsersList = userRepository.findAll();
+		if(optionalUsersList.isPresent()) {		
+			try (Stream<User> result =  optionalUsersList.get().stream()) {
+				result.forEach((final User user)-> LOGGER.info(String.format("User "+user.toString())));
+			} 
+			return optionalUsersList.get();
 		}else {
 			throw new UserNotFoundException(String.format("Users not Found"));
 		}
@@ -78,7 +84,9 @@ public class UserServiceImpl implements UserService {
 	public User saveUser(User user) {
 		if(!user.getGames().isEmpty()) {
 			for (Game ga : user.getGames()) {
-				gameRepository.save(ga);
+				if(!gameRepository.findByName(ga.getName().toLowerCase().trim()).isPresent()){
+					gameRepository.save(ga);
+				}
 			}
 		}
 		return userRepository.save(user);

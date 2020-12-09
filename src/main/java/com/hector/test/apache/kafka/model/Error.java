@@ -12,9 +12,7 @@ public class Error implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String message;
-	private String exception;
-	private String topic;
+	private String message,exception,topic;
 		
 	public Error() {
 		super();
@@ -54,6 +52,10 @@ public class Error implements Serializable {
 	@Override
 	public String toString() {
 		return "Error [message=" + message + ", exception=" + exception + ", topic=" + topic + "]";
+	}
+	
+	public Error errorToLower() {
+		return new Error(this.message.toLowerCase(),this.exception.toLowerCase(),this.topic.toLowerCase());
 	}
 			
 

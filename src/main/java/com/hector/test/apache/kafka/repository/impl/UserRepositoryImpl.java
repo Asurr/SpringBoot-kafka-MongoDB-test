@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.schema.MongoJsonSchema;
+import org.springframework.data.mongodb.core.validation.Validator;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -58,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository{
 
 	//metodo de guardado
 	@Override
-	public User save(User user) {
+	public User save(User user) {		
 		this.mongoOperations.save(user);
 		return (User) findByDni(user.getDni()).get();
 	}

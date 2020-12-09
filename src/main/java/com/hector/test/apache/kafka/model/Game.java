@@ -15,8 +15,7 @@ public class Game implements Serializable{
 	
 	@Id	
 	private String code;
-	private String name;
-	private String category;
+	private String name,category;
 	
 	public Game() {
 		super();
@@ -56,6 +55,10 @@ public class Game implements Serializable{
 	@Override
 	public String toString() {
 		return "Game [code=" + code + ", name=" + name + ", category=" + category + "]";
+	}
+	
+	public Game gameToLower() {
+		return new Game(this.code.toLowerCase(), this.name.toLowerCase(), this.category.toLowerCase());
 	}
 	
 }

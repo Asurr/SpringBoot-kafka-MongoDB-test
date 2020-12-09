@@ -16,11 +16,7 @@ public class User implements Serializable {
 	
 	@Id
 	private String dni;
-	private String name;
-	private String dept;
-	private String age;
-	private String mail;
-	private String country;
+	private String name,dept,age, mail,country;
 	private double phone;
 	private List<Game> games;
 

@@ -10,6 +10,8 @@ public interface GameRepository {
 	Optional<List<Game>> findAll();
 
 	Optional<Game> findByCode(String code);
+	
+	Optional<Game> findByName(String name);
 
 	Game save(Game game);
 
