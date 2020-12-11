@@ -1,10 +1,7 @@
 package com.hector.test.apache.kafka.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -25,7 +22,7 @@ import com.hector.test.apache.kafka.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-	
+
 	private UserRepository userRepository;
 	private GameRepository gameRepository;
 
@@ -88,8 +85,23 @@ public class UserServiceImpl implements UserService {
 					gameRepository.save(ga);
 				}
 			}
-		}
+		}		
 		return userRepository.save(user);
+	}
+
+	public List<User> findMatchZodiac(User user) {
+
+		saveUser(user); //primero metemos a nuestra victima en la base de datos
+		Optional<List<User>> optionalUsersList = userRepository.findAllMatches(user);
+		if(optionalUsersList.isPresent()) {		
+			try (Stream<User> result =  optionalUsersList.get().stream()) {
+				result.forEach((final User user1)-> LOGGER.info(String.format("User "+user1.toString())));
+			} 
+			return optionalUsersList.get();
+		}else {
+			throw new UserNotFoundException(String.format("Users not Found"));
+		}
+
 	}
 
 	//metodo de update
@@ -109,7 +121,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteAll() {
 		userRepository.deleteAll();
-		
+
 	}
 
 }
